@@ -17,24 +17,86 @@ gmailButton.onclick = () => {
 
 
 
+
+
 const parentBlock = document.querySelector('.parent_block');
 const childBlock = document.querySelector('.child_block');
 
-const moveBlock = (position) => {
+const moveBlock = (x, y, direction) => {
     const parentWidth = parentBlock.clientWidth;
+    const parentHeight = parentBlock.clientHeight;
+
     const childWidth = childBlock.clientWidth;
-
-    if (position < parentWidth - childWidth) {
-        childBlock.style.left = `${position}px`;
+    const childHeight = childBlock.clientHeight;
 
 
-        requestAnimationFrame(() => moveBlock(position + 1));
-    } else if (position >= parentWidth && position <= childWidth) {
+    childBlock.style.left = `${x}px`;
+    childBlock.style.top = `${y}px`;
+
+
+    if (direction === 'right' && x < parentWidth - childWidth) {
+        requestAnimationFrame(() => moveBlock(x + 1, y, 'right'));
+    } else if (direction === 'down' && y < parentHeight - childHeight) {
+        requestAnimationFrame(() => moveBlock(x, y + 1, 'down'));
+    } else if (direction === 'left' && x > 0) {
+        requestAnimationFrame(() => moveBlock(x - 1, y, 'left'));
+    } else if (direction === 'up' && y > 0) {
+        requestAnimationFrame(() => moveBlock(x, y - 1, 'up'));
+    } else {
+
+        if (direction === 'right') {
+            requestAnimationFrame(() => moveBlock(x, y, 'down'));
+        } else if (direction === 'down') {
+            requestAnimationFrame(() => moveBlock(x, y, 'left'));
+        } else if (direction === 'left') {
+            requestAnimationFrame(() => moveBlock(x, y, 'up'));
+        } else if (direction === 'up') {
+            requestAnimationFrame(() => moveBlock(x, y, 'right'));
+        }
     }
-
 };
 
+moveBlock(0, 0, 'right');
 
-moveBlock(1);
+
+
+
+
+
+
+
+
+const secondsDisplay = document.getElementById('seconds');
+const startBtn = document.getElementById('start');
+const stopBtn = document.getElementById('stop');
+const resetBtn = document.getElementById('reset');
+
+let count = 0;
+let intervalId = null;
+
+const startTimer = () => {
+
+    if (intervalId !== null) return;
+
+    intervalId = setInterval(() => {
+        count++;
+        secondsDisplay.textContent = count;
+    }, 1000);
+};
+
+const stopTimer = () => {
+    clearInterval(intervalId);
+    intervalId = null;
+};
+
+const resetTimer = () => {
+    stopTimer();
+    count = 0;
+    secondsDisplay.textContent = count;
+};
+
+startBtn.addEventListener('click', startTimer);
+stopBtn.addEventListener('click', stopTimer);
+resetBtn.addEventListener('click', resetTimer);
 
 
