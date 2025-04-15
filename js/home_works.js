@@ -100,3 +100,47 @@ stopBtn.addEventListener('click', stopTimer);
 resetBtn.addEventListener('click', resetTimer);
 
 
+const charactersList = document.querySelector('.characters-list')
+
+const generateCharactersCards = () => {
+    const request = new XMLHttpRequest()
+    request.open('GET', "../data/characters.json")
+    request.setRequestHeader('Content-type', 'application/json')
+    request.send()
+
+    request.onload = () => {
+        const data = JSON.parse(request.response)
+        data.forEach(character => {
+            const characterCard = document.createElement('div')
+            characterCard.classList.add('character-card')
+
+            characterCard.innerHTML = `
+                <h2>${character.name}</h2>
+                <h4>age: ${character.age}</h4>
+                <img src="${character.photo}" alt="photo">
+            `
+
+            charactersList.append(characterCard)
+        })
+    }
+}
+
+generateCharactersCards()
+
+
+
+const request = new XMLHttpRequest();
+
+request.open('GET', '../data/mydata.json');
+request.setRequestHeader('Content-type', 'application/json');
+request.send();
+
+request.onload = () => {
+    if (request.status === 200) {
+        const data = JSON.parse(request.response);
+        console.log(data);
+    } else {
+        console.error('Ошибка загрузки JSON: ' + request.status);
+    }
+};
+
