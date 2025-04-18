@@ -60,3 +60,51 @@ setInterval(() => {
     hideTabContent();
     showTabContent(currentIndex);
 }, 3000);
+
+
+
+
+
+
+
+const somInput = document.querySelector('#som');
+const usdInput = document.querySelector('#usd');
+const kztInput = document.querySelector('#kzt');
+
+const converter = (element, targetElement1, targetElement2) => {
+    element.oninput = () => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', '../data/converter.json');
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.send();
+
+        xhr.onload = () => {
+            if (xhr.status === 200) {
+                const data = JSON.parse(xhr.response);
+                const usd = data.usd;
+                const kzt = data.kzt;
+
+                if (element.id === 'som') {
+                    targetElement1.value = (element.value / usd).toFixed(2);
+                    targetElement2.value = (element.value / kzt).toFixed(2);
+                } else if (element.id === 'usd') {
+                    targetElement1.value = (element.value * usd).toFixed(2);
+                    targetElement2.value = ((element.value * usd) / kzt).toFixed(2);
+                } else if (element.id === 'eur') {
+                    targetElement1.value = (element.value * kzt).toFixed(2);
+                    targetElement2.value = ((element.value * kzt) / usd).toFixed(2);
+                }
+
+                if (element.value === '') {
+                    targetElement1.value = '';
+                    targetElement2.value = '';
+                }
+            }
+        };
+    };
+};
+
+converter(somInput, usdInput, kztInput);
+converter(usdInput, somInput, kztInput);
+converter(kztInput, somInput, usdInput);
+
