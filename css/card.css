@@ -1,52 +1,38 @@
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f4f4f4;
+.cards {
+    background: var(--black);
+}
+.character-card p {
+    color: #ff0000;
 }
 
-header, footer {
-    background: #333;
-    color: white;
+
+.cards-list {
+    padding: 100px 0;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.character-card {
+    border: 2px solid var(--orange);
+    padding: 10px;
+    width: 281px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     text-align: center;
-    padding: 20px 0;
 }
 
-main {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 30px;
-}
-
-.card {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    overflow: hidden;
-    transition: 0.3s;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-}
-
-.card img {
+.card-photo {
     width: 100%;
     height: 150px;
+    border: 2px solid var(--orange);
+    margin: 0 auto;
+}
+
+.card-photo img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-}
-
-.card-content {
-    padding: 15px;
-}
-
-.card-title {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.card-description {
-    font-size: 14px;
-    color: #555;
 }

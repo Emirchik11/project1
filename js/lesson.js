@@ -90,7 +90,7 @@ const converter = (element, targetElement1, targetElement2) => {
                 } else if (element.id === 'usd') {
                     targetElement1.value = (element.value * usd).toFixed(2);
                     targetElement2.value = ((element.value * usd) / kzt).toFixed(2);
-                } else if (element.id === 'eur') {
+                } else if (element.id === 'kzt') {
                     targetElement1.value = (element.value * kzt).toFixed(2);
                     targetElement2.value = ((element.value * kzt) / usd).toFixed(2);
                 }
@@ -170,20 +170,25 @@ loadPosts();
 
 // Weather
 
-const searchInput = document.querySelector('.cityName');
-const searchButton = document.querySelector('#search');
-const cityName = document.querySelector('.city')
-const cityTemp = document.querySelector('.temp')
+const inputSearch = document.querySelector('.cityName');
+const buttonSearch = document.querySelector('#search');
+const city = document.querySelector('.city');
+const temp = document.querySelector('.temp')
+const weatherIcon = document.querySelector('#weather-icon')
 
+const API_URL = 'https://api.openweathermap.org/data/2.5/weather'
+const API_KEY =  'e417df62e04d3b1b111abeab19cea714'
 
-searchButton.onclick = () => {
-    fetch('http://api.openweathermap.org/data/2.5/weather?appid=e417df62e04d3b1b111abeab19cea714')
-        .then(res => res.json())
+buttonSearch.onclick = () => {
+    fetch(`${API_URL}?appid=${API_KEY}&q=${inputSearch.value}&units=metric&lang=RU`)
+        .then(response => response.json())
         .then(data => {
-            console.log(data)
+            city.innerHTML = data.name || 'Город не найден'
+            temp.innerHTML = data.main?.temp ? Math.round(data.main?.temp) + '&deg;C' : '-/-/-/-'
+            weatherIcon.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}.png`
         })
+    inputSearch.value = ''
 }
-
 
 
 
